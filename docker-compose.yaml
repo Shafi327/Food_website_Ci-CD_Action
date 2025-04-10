@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27019:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: mydatabase
+
+  server:
+    container_name: backend-app
+    build:
+      context: .
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    ports:
+      - "3512:3512"
+
+  client:
+    container_name: frontend-app
+    build:
+      context: ./client
+    env_file:
+      - ./client/.env
+    depends_on:
+      - server
+    ports:
+      - "4173:4173"
