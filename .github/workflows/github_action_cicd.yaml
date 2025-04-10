@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
           source: '.'
-          target: "/home/ubuntu/app"
+          target: "/home/ubuntu/myapp"
 
       - name: Install Node.js and npm on EC2
         uses: appleboy/ssh-action@v0.1.10

@@ -28,12 +28,7 @@ app.use(cookieParser());
 //     origin: "*",
 //     credentials: true
 // }
-app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL
-    methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-    allowedHeaders: 'Content-Type, Authorization',
-    credentials: true, // Allow cookies and authentication headers
-  }));
+app.use(cors());
 
 // api
 app.use("/api/v1/user", userRoute);
