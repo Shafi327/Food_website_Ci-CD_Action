@@ -9,4 +9,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    host: true,     // exposes server on 0.0.0.0 (external access)
+    port: 3000,     // desired port
+       // https would require certs (see below if needed)
+  }
 })
