@@ -36,7 +36,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.IP }}
-          username: ubuntu
+          username: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
 
           script: |
