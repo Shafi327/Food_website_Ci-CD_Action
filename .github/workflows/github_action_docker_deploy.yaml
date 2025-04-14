@@ -38,22 +38,20 @@ jobs:
           host: ${{ secrets.IP }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY }}
-
           script: |
             cd /home/ubuntu/app
 
-            echo "REACT_APP_API_URL=http://your-api-url" > .env
-            echo "DB_USER=admin" >> .env
-            echo "DB_PASS=secret" >> .env
-            echo "NODE_ENV=production" >> .env
+            # Create or update .env file
+            cat <<EOF > .env
+            REACT_APP_API_URL=http://your-api-url
+            DB_USER=admin
+            DB_PASS=secret
+            NODE_ENV=production
+            EOF
 
+            # Pull the latest Docker images
             sudo docker pull shafi627/backend:latest
             sudo docker pull shafi627/frontend:latest
 
-            # ✅ Corrected command
+            # Start services using Docker Compose
             sudo docker-compose up -d
-
-
-
-
-      
