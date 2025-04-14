@@ -41,7 +41,13 @@ jobs:
           
           
           script: |
-        
+           #  Create .env file before docker-compose
+            echo "REACT_APP_API_URL=http://your-api-url" > server/.env
+            echo "DB_USER=admin" >> server/.env
+            echo "DB_PASS=secret" >> server/.env
+            echo "NODE_ENV=production" >> server/.env
+
+            
             docker pull shafi627/backend:latest
             docker pull shafi627/frontend:latest
             docker-compose up -d
