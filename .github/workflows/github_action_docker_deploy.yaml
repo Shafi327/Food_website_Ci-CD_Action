@@ -37,8 +37,7 @@ jobs:
         with:
           host: ${{ secrets.IP }}
           username: ubuntu
-          key: ${{ secrets.PRIVATE_KEY
- 
+          key: ${{ secrets.PRIVATE_KEY}}
           
 
 
