@@ -9,6 +9,7 @@ import restaurantRoute from "./routes/restaurant.route";
 import menuRoute from "./routes/menu.route";
 import orderRoute from "./routes/order.route";
 import path from "path";
+// import http from "http";
 
 dotenv.config();
 
@@ -44,3 +45,15 @@ app.listen(PORT, () => {
     connectDB();
     console.log(`Server listen at port ${PORT}`);
 });
+
+
+// const server = http.createServer(app);
+// server.on("clientError", (err, socket) => {
+//     console.error("Client error:", err.message);
+//     socket.destroy();
+// });
+
+// server.listen(PORT, () => {
+//     connectDB();
+//     console.log(`Server is listening at port ${PORT}`);
+// });
