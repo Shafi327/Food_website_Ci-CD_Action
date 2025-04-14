@@ -40,16 +40,22 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
 
           script: |
-            cd /home/ubuntu/app
+            cd /home/ubuntu/app || mkdir /home/ubuntu/app && cd /home/ubuntu/app
 
-            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
+            echo "Cleaning up Docker to free space"
+            sudo docker container prune -f
+            sudo docker image prune -af
+            sudo docker volume prune -f
+
+            echo "REACT_APP_API_URL=http://your-api-url" > .env
             echo "DB_USER=admin" >> .env
             echo "DB_PASS=secret" >> .env
-            echo "NODE_ENV=production" >> client/.env
+            echo "NODE_ENV=production" >> .env
 
+            echo "Pulling latest Docker images"
             sudo docker pull shafi627/backend:latest
             sudo docker pull shafi627/frontend:latest
 
-            # Corrected command
+            echo "Starting Docker containers"
             sudo docker-compose up -d
 
