@@ -41,7 +41,7 @@ jobs:
 
           script: |
             # Go to project directory
-            /home/ubuntu/myapp
+            cd /home/ubuntu/myapp
 
             # Create .env file
             echo "REACT_APP_API_URL=http://your-api-url" > .env
