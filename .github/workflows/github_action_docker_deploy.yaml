@@ -40,18 +40,16 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
 
           script: |
-            # Go to project directory
             cd /home/ubuntu/myapp
 
-            # Create .env file
             echo "REACT_APP_API_URL=http://your-api-url" > .env
             echo "DB_USER=admin" >> .env
             echo "DB_PASS=secret" >> .env
             echo "NODE_ENV=production" >> .env
 
-            # Pull latest Docker images
             sudo docker pull shafi627/backend:latest
             sudo docker pull shafi627/frontend:latest
 
-            # Bring up services
-            sudo docker compose up -d
+            # ✅ Corrected command
+            sudo docker-compose up -d
+
