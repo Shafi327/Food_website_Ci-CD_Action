@@ -22,6 +22,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t shafi627/backend:latest .
+          docker push shafi627/backend:latest
+
+      - name: Build and Push Frontend Image
+        run: |
+          docker build -t shafi627/frontend:latest ./client
+          docker push shafi627/frontend:latest
+
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -30,33 +40,20 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
 
           script: |
-            # Go to home directory
-            cd /home/ubuntu
+            cd /home/ubuntu/app
 
-            # Remove the old app if it exists
-            rm -rf app
-
-            # Clone the fresh code
-            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git app
-
-            cd app
-
-            # Create .env files
             echo "REACT_APP_API_URL=http://your-api-url" > .env
             echo "DB_USER=admin" >> .env
             echo "DB_PASS=secret" >> .env
             echo "NODE_ENV=production" >> .env
 
-            # Also create .env for frontend if needed
-            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
-            echo "NODE_ENV=production" >> client/.env
-
-            echo "✅ .env files created"
-            ls -la .env client/.env
-
-            # Pull latest images
             sudo docker pull shafi627/backend:latest
             sudo docker pull shafi627/frontend:latest
 
-            # Run docker-compose
-            sudo docker-compose -f docker-compose.yml up -d --remove-orphans
+            # ✅ Corrected command
+            sudo docker-compose up -d
+
+
+
+
+      
