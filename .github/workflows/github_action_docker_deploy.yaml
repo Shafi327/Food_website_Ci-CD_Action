@@ -1,4 +1,3 @@
-
 name: Deploy to AWS EC2
 
 on:
@@ -36,25 +35,19 @@ jobs:
       - name: SSH into EC2 and Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.IP }}
+          host: ${{ secrets.EC2_HOST }}
           username: ubuntu
-          key: ${{ secrets.PRIVATE_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          
+
+
           script: |
-            script: |
-            cd /home/ubuntu
-
-            # Clean old app if necessary
-            rm -rf food-app
-            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git food-app
-            cd food-app
-
-            # Create the .env file in root (used by docker-compose)
-            echo "REACT_APP_API_URL=http://your-api-url" > .env
-            echo "DB_USER=admin" >> .env
-            echo "DB_PASS=secret" >> .env
-            echo "NODE_ENV=production" >> .env
-
-            ls -la .env
+            cd /home/ubuntu/myapp
+            docker pull shafi627/backend:latest
+            docker pull shafi627/frontend:latest
+            docker-compose up -d
+            EOF
+          
           
 
 
