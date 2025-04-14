@@ -38,8 +38,14 @@ jobs:
           host: ${{ secrets.IP }}
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY}}
-          port: 22
+          
+          
           script: |
+          #  Create .env file before docker-compose
+            echo "REACT_APP_API_URL=http://your-api-url" > server/.env
+            echo "DB_USER=admin" >> server/.env
+            echo "DB_PASS=secret" >> server/.env
+            echo "NODE_ENV=production" >> server/.env
             cd /home/ubuntu/myapp
             docker pull shafi627/backend:latest
             docker pull shafi627/frontend:latest
