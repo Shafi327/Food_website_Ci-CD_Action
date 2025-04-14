@@ -46,10 +46,10 @@ jobs:
             cd myapp
 
             #  Create .env file before docker-compose
-            echo "REACT_APP_API_URL=http://your-api-url" > server/.env
-            echo "DB_USER=admin" >> server/.env
-            echo "DB_PASS=secret" >> server/.env
-            echo "NODE_ENV=production" >> server/.env
+            echo "REACT_APP_API_URL=http://your-api-url" > .env
+            echo "DB_USER=admin" >> .env
+            echo "DB_PASS=secret" >> .env
+            echo "NODE_ENV=production" >> .env
 
             ls -la server/.env
             cd myapp
