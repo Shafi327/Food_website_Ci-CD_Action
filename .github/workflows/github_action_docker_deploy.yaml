@@ -40,21 +40,21 @@ jobs:
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
+            script: |
             cd /home/ubuntu
-            # rm -rf myapp
-            https://github.com/Shafi327/Food_website_Ci-CD_Action.git myapp
-            cd myapp
 
-            #  Create .env file before docker-compose
+            # Clean old app if necessary
+            rm -rf food-app
+            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git food-app
+            cd food-app
+
+            # Create the .env file in root (used by docker-compose)
             echo "REACT_APP_API_URL=http://your-api-url" > .env
             echo "DB_USER=admin" >> .env
             echo "DB_PASS=secret" >> .env
             echo "NODE_ENV=production" >> .env
 
-            ls -la server/.env
-            cd myapp
-            ls -la
-            sudo docker-compose up -d
+            ls -la .env
           
 
 
