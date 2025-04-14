@@ -44,9 +44,7 @@ jobs:
             git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git /home/ubuntu/app
             cd /home/ubuntu/appu/app
 
-            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
-            echo "DB_USER=admin" >> .env
-            echo "DB_PASS=secret" >> .env
+          
             
 
             sudo docker pull shafi627/backend:latest
