@@ -1,3 +1,59 @@
+# name: Deploy to AWS EC2
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up Docker
+#         uses: docker/setup-buildx-action@v2
+
+#       - name: Log in to DockerHub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Build and Push Backend Image
+#         run: |
+#           docker build -t shafi627/backend:latest .
+#           docker push shafi627/backend:latest
+
+#       - name: Build and Push Frontend Image
+#         run: |
+#           docker build -t shafi627/frontend:latest ./client
+#           docker push shafi627/frontend:latest
+
+#       - name: SSH into EC2 and Deploy
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.IP }}
+#           username: ${{ secrets.USER }}
+#           key: ${{ secrets.PRIVATE_KEY }}
+
+#           script: |
+#             . 
+#             git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git
+
+#             echo "REACT_APP_API_URL=http://your-api-url" > client/.env
+#             echo "DB_USER=admin" >> .env
+#             echo "DB_PASS=secret" >> .env
+            
+
+#             sudo docker pull shafi627/backend:latest
+#             sudo docker pull shafi627/frontend:latest
+
+#             # Corrected command
+#             sudo docker-compose up -d
+
 name: Deploy to AWS EC2
 
 on:
@@ -36,22 +92,20 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.IP }}
-          username: ${{ secrets.USER }}
+          username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
-
           script: |
-            . 
-            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git /home/ubuntu/app
-            cd /home/ubuntu/appu/app
-
-            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
-            echo "DB_USER=admin" >> .env
-            echo "DB_PASS=secret" >> .env
-            
-
-            sudo docker pull shafi627/backend:latest
-            sudo docker pull shafi627/frontend:latest
-
-            # Corrected command
+            cd /home/ubuntu
+            rm -rf myapp
+            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git myapp
+            cd myapp
+            ls -la
             sudo docker-compose up -d
 
+
+          # script: |
+          #   cd /home/ubuntu/myapp
+          #   docker pull shafi627/backend:latest
+          #   docker pull shafi627/frontend:latest
+          #   docker-compose up -d
+          #   EOF
