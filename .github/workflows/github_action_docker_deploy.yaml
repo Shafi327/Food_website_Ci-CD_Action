@@ -95,9 +95,9 @@ jobs:
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/myapp
+            cd /home/ubuntu/
             rm -rf myapp
-            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git myapp
+            git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git
             cd myapp
 
             #  Create .env file before docker-compose
