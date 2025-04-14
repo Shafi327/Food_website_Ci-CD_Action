@@ -42,8 +42,8 @@ jobs:
           script: |
             cd /home/ubuntu
             rm -rf myapp
-            # git clone https://github.com/Shafi327/Food-website.git myapp
-            # cd myapp
+            https://github.com/Shafi327/Food_website_Ci-CD_Action.git myapp
+            cd myapp
 
             #  Create .env file before docker-compose
             echo "REACT_APP_API_URL=http://your-api-url" > server/.env
@@ -52,7 +52,6 @@ jobs:
             echo "NODE_ENV=production" >> server/.env
 
             ls -la server/.env
-
             cd myapp
             ls -la
             sudo docker-compose up -d
