@@ -41,7 +41,7 @@ jobs:
 
           script: |
             # Go to project directory
-            cd ~/myapp
+            cd ~/app
 
             # Create .env file
             echo "REACT_APP_API_URL=http://your-api-url" > .env
