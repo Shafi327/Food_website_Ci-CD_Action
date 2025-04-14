@@ -47,7 +47,7 @@ jobs:
             sudo docker image prune -af
             sudo docker volume prune -f
 
-            echo "REACT_APP_API_URL=http://your-api-url" > .env
+            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
             echo "DB_USER=admin" >> .env
             echo "DB_PASS=secret" >> .env
             echo "NODE_ENV=production" >> .env
