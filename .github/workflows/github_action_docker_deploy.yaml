@@ -40,16 +40,28 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
 
           script: |
+            # Remove old application directory
             rm -rf /home/ubuntu/app
+
+            # Clone the repository
             git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git /home/ubuntu/app
-            cd /home/ubuntu/appu/app
 
-          
-            
+            # Navigate to the correct directory
+            cd /home/ubuntu/app
 
+            # Create .env files
+            echo "REACT_APP_API_URL=http://your-api-url" > client/.env
+            echo "DB_USER=admin" >> .env
+            echo "DB_PASS=secret" >> .env
+
+            # Pull the latest Docker images
             sudo docker pull shafi627/backend:latest
             sudo docker pull shafi627/frontend:latest
 
-            # Corrected command
-            sudo docker-compose up -d
-
+            # Ensure docker-compose.yml exists and bring up services
+            if [ -f docker-compose.yml ]; then
+              sudo docker-compose up -d
+            else
+              echo "Error: docker-compose.yml not found in /home/ubuntu/app"
+              exit 1
+            fi
