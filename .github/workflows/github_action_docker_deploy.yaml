@@ -96,10 +96,9 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/
-            rm -rf myapp
+          
             git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git
-            cd myapp
-
+          
             #  Create .env file before docker-compose
             echo "REACT_APP_API_URL=http://your-api-url" > .env
             echo "DB_USER=admin" >> .env
