@@ -38,15 +38,13 @@ jobs:
           host: ${{ secrets.IP }}
           username: ubuntu
           key: ${{ secrets.PRIVATE_KEY}}
-          
-
-
+          port: 22
           script: |
             cd /home/ubuntu/myapp
             docker pull shafi627/backend:latest
             docker pull shafi627/frontend:latest
             docker-compose up -d
-            EOF
+          
           
           
 
