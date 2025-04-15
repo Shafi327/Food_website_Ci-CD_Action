@@ -38,13 +38,16 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i "githubaction-key.pem" ubuntu@ec2-23-20-228-122.compute-1.amazonaws.com ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
-          cd /home/ubuntu/app
-          git pull origin main
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker-compose pull
-          docker-compose up -d
-          EOF
+           ssh -i "githubaction-key.pem" \
+               -o StrictHostKeyChecking=no \
+               -o UserKnownHostsFile=/dev/null \ 
+               ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
+           cd /home/ubuntu/app
+           git pull origin main
+           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+           docker-compose pull
+           docker-compose up -d
+           EOF
 
 
 # name: Deploy to AWS EC2
