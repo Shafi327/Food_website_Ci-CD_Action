@@ -39,13 +39,17 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
-            # cd /home/ubuntu/app
+            cd /home/ubuntu/app # Replace with the correct directory
+            if [ ! -d .git ]; then
+              echo "Initializing git repository..."
+              git init
+              git remote add origin https://github.com/Shafi327/Food_website_Ci-CD_Action.git
+            fi
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker-compose pull
             docker-compose up -d
           EOF
-
 
 # name: Deploy to AWS EC2
 
@@ -95,12 +99,10 @@ jobs:
 #             ls -la
 #             sudo docker-compose up -d
 
-
 #             docker pull shafi627/backend:latest
 #             docker pull shafi627/frontend:latest
 #             docker-compose up -d
 #             EOF
 #           # script: |
 #           #   cd /home/ubuntu/myapp
-
 
