@@ -21,26 +21,33 @@ jobs:
 
       - name: Build & Push Backend Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -f dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest -f dockerfile.backend .
           docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
       - name: Build & Push Frontend Image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest -f client/dockerfile ./client
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-
-      - name: Deploy to EC2
-        run: |
+        - name: Deploy to EC2
+            run: |
           echo "${{ secrets.PRIVATE_KEY }}" > githubaction-key.pem
           chmod 600 githubaction-key.pem
-          ssh -o StrictHostKeyChecking=no \
-              -i githubaction-key.pem \
-              ${{ secrets.USER }}@${{ secrets.IP }} \
-              "cd /home/ubuntu/app && \
-               git pull origin main && \
-               docker-compose pull && \
-               docker-compose up -d"
-          rm -f githubaction-key.pem
+    
+          ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
+          mkdir -p /home/ubuntu/app
+          if [ ! -d /home/ubuntu/app/.git ]; then
+          cd /home/ubuntu/app
+          git init
+          git remote add origin https://github.com/Shafi327/Food_website_Ci-CD_Action.git
+          fi
+          cd /home/ubuntu/app
+          git fetch origin
+          git reset --hard origin/main
+          docker-compose pull
+          docker-compose up -d
+          EOF
+    
+         rm -f githubaction-key.pem
 
 # name: Deploy to AWS EC2
 
