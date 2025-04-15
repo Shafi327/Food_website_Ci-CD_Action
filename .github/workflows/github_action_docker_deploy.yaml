@@ -39,7 +39,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
-            cd /home/ubuntu/app
+            # cd /home/ubuntu/app
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker-compose pull
