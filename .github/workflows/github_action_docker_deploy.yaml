@@ -38,7 +38,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
             cd app-directory  # change to your deployment directory
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
