@@ -33,12 +33,12 @@ jobs:
       # SSH to EC2 and deploy with docker-compose
       - name: Write SSH Key
         run: |
-          echo "${{ secrets.PRIVATE_KEY }}" > key.pem
+          echo "${{ secrets.PRIVATE_KEY }}" > githubaction-key.pem
           chmod 600 key.pem
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
             cd app-directory  # change to your deployment directory
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
