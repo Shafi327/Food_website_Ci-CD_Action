@@ -45,6 +45,7 @@ jobs:
               -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               ${{ secrets.USER }}@${{ secrets.IP }} << EOF
+              
             cd /home/ubuntu/app
             git pull origin main
             docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
