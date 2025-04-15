@@ -36,7 +36,8 @@ jobs:
           echo "${{ secrets.PRIVATE_KEY }}" > githubaction-key.pem
           chmod 600 githubaction-key.pem
 
-      env:
+      - name: Deploy to EC2
+        env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
