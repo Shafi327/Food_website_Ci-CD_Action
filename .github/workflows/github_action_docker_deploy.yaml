@@ -40,7 +40,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
             cd /home/ubuntu/app
-  # change to your deployment directory
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker-compose pull
