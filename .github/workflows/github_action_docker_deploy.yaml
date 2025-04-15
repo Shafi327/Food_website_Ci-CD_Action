@@ -33,6 +33,7 @@ jobs:
       - name: Upload .env file
         run: |
           scp -o StrictHostKeyChecking=no -i githubaction-key.pem /.env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/.env
+          scp -o StrictHostKeyChecking=no -i githubaction-key.pem ./client/.env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/.env
 
       # SSH to EC2 and deploy with docker-compose
       - name: Write SSH Key
