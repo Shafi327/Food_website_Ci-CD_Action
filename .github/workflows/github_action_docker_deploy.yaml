@@ -34,11 +34,11 @@ jobs:
       - name: Write SSH Key
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > githubaction-key.pem
-          chmod 600 key.pem
+          chmod 600 githubaction-key.pem
 
       - name: Deploy to EC2
         run: |
-          ssh -i "githubaction-key.pem" ubuntu@ec2-23-20-228-122.compute-1.amazonaws.com ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
             cd app-directory  # change to your deployment directory
             git pull origin main
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
