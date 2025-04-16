@@ -43,7 +43,7 @@ jobs:
           scp -o StrictHostKeyChecking=no -i githubaction-key.pem .env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/.env
           - name: Upload .env file
           run: |
-            scp -o StrictHostKeyChecking=no -i githubaction-key.pem client/.env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/client/.env
+            scp -o StrictHostKeyChecking=no -i githubaction-key.pem ./client/.env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/client/.env
         
      
 
