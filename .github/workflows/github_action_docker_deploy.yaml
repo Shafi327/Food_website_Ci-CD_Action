@@ -16,7 +16,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Build and Push Backend
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
@@ -30,12 +29,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./client
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
-      - name: Upload .env file
-        run: |
-          scp -o StrictHostKeyChecking=no -i githubaction-key.pem .env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/.env
-          scp -o StrictHostKeyChecking=no -i githubaction-key.pem ./client/.env ${{ secrets.USER }}@${{ secrets.IP }}:/home/ubuntu/app/client/.env
-
-      # SSH to EC2 and deploy with docker-compose
       - name: Write SSH Key
         run: |
           echo "${{ secrets.PRIVATE_KEY }}" > githubaction-key.pem
@@ -43,15 +36,80 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} << 'EOF'
-            cd /home/ubuntu/app # Replace with the correct directory
-            if [ ! -d .git ]; then
-              echo "Initializing git repository..."
-              git init
-              git remote add origin https://github.com/Shafi327/Food_website_Ci-CD_Action.git
+          ssh -o StrictHostKeyChecking=no -i githubaction-key.pem ${{ secrets.USER }}@${{ secrets.IP }} <<EOF
+            set -e
+
+            cd /home/ubuntu/app
+
+            # Pull latest code
+            if [ -d .git ]; then
+              git pull origin main
+            else
+              git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git .
             fi
-            git pull origin main
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker-compose pull
-            docker-compose up -d
+
+            # Log in to Docker Hub
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+            # Pull latest images and restart containers
+            sudo docker-compose pull
+            sudo docker-compose up -d
           EOF
+
+
+
+# name: Deploy to AWS EC2
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up Docker
+#         uses: docker/setup-buildx-action@v2
+
+#       - name: Log in to DockerHub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Build and Push Backend Image
+#         run: |
+#           docker build -t shafi627/backend:latest .
+#           docker push shafi627/backend:latest
+
+#       - name: Build and Push Frontend Image
+#         run: |
+#           docker build -t shafi627/frontend:latest ./client
+#           docker push shafi627/frontend:latest
+
+#       - name: SSH into EC2 and Deploy
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.IP }}
+#           username: ubuntu
+#           key: ${{ secrets.PRIVATE_KEY }}
+#           script: |
+#             cd /home/ubuntu
+#             rm -rf myapp
+#             git clone https://github.com/Shafi327/Food_website_Ci-CD_Action.git myapp
+#             cd myapp
+#             ls -la
+#             sudo docker-compose up -d
+
+#             docker pull shafi627/backend:latest
+#             docker pull shafi627/frontend:latest
+#             docker-compose up -d
+#             EOF
+#           # script: |
+#           #   cd /home/ubuntu/myapp
+
